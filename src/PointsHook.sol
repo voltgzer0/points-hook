@@ -63,13 +63,11 @@ contract PointsHook is BaseHook, ERC1155 {
     }
 
     /// @dev afterSwap: mint user points on ETH -> TOKEN swaps, plus referrer bonus if opted in.
-    function _afterSwap(
-        address,
-        PoolKey calldata key,
-        SwapParams calldata,
-        BalanceDelta delta,
-        bytes calldata hookData
-    ) internal override returns (bytes4, int128) {
+    function _afterSwap(address, PoolKey calldata key, SwapParams calldata, BalanceDelta delta, bytes calldata hookData)
+        internal
+        override
+        returns (bytes4, int128)
+    {
         // Only ETH-TOKEN pools with this hook attached (currency0 == 0x0).
         if (!key.currency0.isAddressZero()) return (this.afterSwap.selector, 0);
 

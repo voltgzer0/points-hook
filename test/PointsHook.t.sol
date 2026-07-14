@@ -43,21 +43,13 @@ contract PointsHookTest is Test, Deployers {
 
         uint160 flags = uint160(Hooks.AFTER_SWAP_FLAG);
         (address hookAddress, bytes32 salt) = HookMiner.find(
-            address(this),
-            flags,
-            type(PointsHook).creationCode,
-            abi.encode(IPoolManager(address(manager)))
+            address(this), flags, type(PointsHook).creationCode, abi.encode(IPoolManager(address(manager)))
         );
         hook = new PointsHook{salt: salt}(IPoolManager(address(manager)));
         require(address(hook) == hookAddress, "hook address mismatch");
 
         (ethKey, ethPid) = initPoolAndAddLiquidityETH(
-            CurrencyLibrary.ADDRESS_ZERO,
-            c1,
-            IHooks(address(hook)),
-            3000,
-            SQRT_PRICE_1_1,
-            10 ether
+            CurrencyLibrary.ADDRESS_ZERO, c1, IHooks(address(hook)), 3000, SQRT_PRICE_1_1, 10 ether
         );
 
         tokenId = uint256(PoolId.unwrap(ethPid));
@@ -70,11 +62,7 @@ contract PointsHookTest is Test, Deployers {
 
         swapRouter.swap{value: ethIn}(
             ethKey,
-            SwapParams({
-                zeroForOne: true,
-                amountSpecified: -int256(ethIn),
-                sqrtPriceLimitX96: MIN_PRICE_LIMIT
-            }),
+            SwapParams({zeroForOne: true, amountSpecified: -int256(ethIn), sqrtPriceLimitX96: MIN_PRICE_LIMIT}),
             PoolSwapTest.TestSettings({takeClaims: false, settleUsingBurn: false}),
             hookData
         );
@@ -130,5 +118,4 @@ contract PointsHookTest is Test, Deployers {
         assertEq(hook.balanceOf(referrer, tokenId), 0);
         assertGt(spent, 0);
     }
-
 }
