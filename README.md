@@ -61,6 +61,35 @@ Each test performs a real swap against a freshly-deployed `PoolManager` using
 `PoolSwapTest`, with the hook address mined for the `AFTER_SWAP_FLAG` bit via
 `HookMiner.find` and deployed by `CREATE2` at the mined address.
 
+## Deploy (Sepolia)
+
+`script/DeployPointsHook.s.sol` mines a valid hook address for `AFTER_SWAP_FLAG`
+(bit 6) and deploys via CREATE2 against the canonical Uniswap v4 PoolManager on
+Sepolia (`0xE03A1074c86CFeDd5C142C4F04F1a1536e203543`).
+
+Copy `.env.example` to `.env` and fill in your `PRIVATE_KEY` (a Sepolia wallet
+funded from any public faucet).
+
+Dry-run (simulate, no broadcast):
+
+```bash
+forge script script/DeployPointsHook.s.sol \
+    --rpc-url $SEPOLIA_RPC_URL \
+    --chain-id 11155111
+```
+
+Broadcast:
+
+```bash
+forge script script/DeployPointsHook.s.sol \
+    --rpc-url $SEPOLIA_RPC_URL \
+    --chain-id 11155111 \
+    --broadcast
+```
+
+RPC endpoints in `.env.example` are all free public Sepolia providers — no
+Alchemy or Infura key required.
+
 ## Attribution
 
 Built for the UHI "Build your first hook" quest by
